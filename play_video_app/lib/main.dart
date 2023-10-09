@@ -10,20 +10,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      //Inicio da widget do material app
+      title: 'PdaNet +',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-      ),
-      home: Container(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text('Ola Mundo'),
-              subtitle: Text('Hello World'),
-            ),
-          ],
-        )
       ),
     );
   }
