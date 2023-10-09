@@ -10,6 +10,8 @@ class firstScreen extends StatefulWidget {
 class _State extends State<firstScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: debugs,
+    );
   }
 }
