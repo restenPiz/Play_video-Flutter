@@ -3,16 +3,15 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:video_player/video_player.dart';
 
-class firstScreen extends StatefulWidget {
-  const firstScreen();
+class FirstScreen extends StatefulWidget {
+  const FirstScreen();
 
   @override
-  State<firstScreen> createState() => _State();
+  _FirstScreenState createState() => _FirstScreenState();
 }
 
-class _State extends State<firstScreen> {
+class _FirstScreenState extends State<FirstScreen> {
   List<String> videoUrls = [];
-  VideoPlayerController _controller;
 
   @override
   void initState() {
@@ -42,7 +41,8 @@ class _State extends State<firstScreen> {
       body: ListView.builder(
         itemCount: videoUrls.length,
         itemBuilder: (context, index) {
-          _controller = VideoPlayerController.network(videoUrls[index]);
+          VideoPlayerController _controller =
+          VideoPlayerController.network(videoUrls[index]);
           _controller.initialize();
 
           return ListTile(
