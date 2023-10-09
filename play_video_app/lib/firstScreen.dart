@@ -11,25 +11,33 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  List<String> videoUrls = [];
+  //!Inicio do metodo responsavel por fazer o fetch dos dados
+  List<Map<String, dynamic>> videoUrls = [];
+
+  //* Função para buscar dados da API e atualizar o estado
+  Future<void> fetchData() async {
+
+    //Selecionando a url da api
+    final response = await http.get(
+        Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json')
+    );
+
+    //Inicio do metodo de redirecionamento
+    if (response.statusCode == 200) {
+      setState(() {
+        videoUrls = List<Map<String, dynamic>>.from(json.decode(response.body));
+      });
+    } else {
+      print('Erro na requisição: ${response.statusCode}');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    fetchData(); // Buscar dados da API quando o widget é inicializado
   }
 
-  // Início do método responsável por fazer o GET de todos os dados da API
-  void fetchData() async {
-    final response = await http.get('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json');
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      setState(() {
-        videoUrls = List<String>.from(data['videos']);
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
