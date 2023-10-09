@@ -11,7 +11,16 @@ class _State extends State<firstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: debugs,
+      appBar: AppBar(
+        title: Text('Video Application'),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Text('Ola Mundo'),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -12,13 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //Inicio da widget do material app
-      title: 'PdaNet +',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
       //Instanciando a minha widget responsavel por fazer o show de todos os dados
       home: firstScreen(),
     );
