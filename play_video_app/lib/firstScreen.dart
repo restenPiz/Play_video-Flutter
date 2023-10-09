@@ -21,8 +21,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
   // Início do método responsável por fazer o GET de todos os dados da API
   void fetchData() async {
-    final response = await http.get(
-        'https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json');
+    final response = await http.get('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json');
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
