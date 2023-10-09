@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'firstScreen.dart';
 
 void main() {
@@ -7,15 +6,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //Instanciando a minha widget responsavel por fazer o show de todos os dados
-      home: firstScreen(),
+      home: FirstScreen(), // Use FirstScreen() em vez de firstScreen()
     );
   }
-
 }

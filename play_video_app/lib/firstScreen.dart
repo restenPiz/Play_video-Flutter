@@ -3,6 +3,22 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:video_player/video_player.dart';
 
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FirstScreen(),
+    );
+  }
+}
+
 class FirstScreen extends StatefulWidget {
   const FirstScreen();
 
@@ -11,21 +27,16 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  //!Inicio do metodo responsavel por fazer o fetch dos dados
-  List<Map<String, dynamic>> videoUrls = [];
+  List<String> videoUrls = [];
 
-  //* Função para buscar dados da API e atualizar o estado
   Future<void> fetchData() async {
-
-    //Selecionando a url da api
     final response = await http.get(
-        Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json')
-    );
+        Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
 
-    //Inicio do metodo de redirecionamento
     if (response.statusCode == 200) {
+      final data = json.decode(response.body);
       setState(() {
-        videoUrls = List<Map<String, dynamic>>.from(json.decode(response.body));
+        videoUrls = List<String>.from(data['videos']);
       });
     } else {
       print('Erro na requisição: ${response.statusCode}');
@@ -35,9 +46,8 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   void initState() {
     super.initState();
-    fetchData(); // Buscar dados da API quando o widget é inicializado
+    fetchData();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +79,27 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 }
 
-class VideoPlayerScreen extends StatelessWidget {
+class VideoPlayerScreen extends StatefulWidget {
   final VideoPlayerController controller;
 
-  VideoPlayerScreen({this.controller});
+  VideoPlayerScreen({required this.controller});
+
+  @override
+  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+}
+
+class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.play();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,20 +109,21 @@ class VideoPlayerScreen extends StatelessWidget {
       ),
       body: Center(
         child: AspectRatio(
-          aspectRatio: controller.value.aspectRatio,
-          child: VideoPlayer(controller),
+          aspectRatio: widget.controller.value.aspectRatio,
+          child: VideoPlayer(widget.controller),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (controller.value.isPlaying) {
-            controller.pause();
+          if (widget.controller.value.isPlaying) {
+            widget.controller.pause();
           } else {
-            controller.play();
+            widget.controller.play();
           }
+          setState(() {});
         },
         child: Icon(
-          controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          widget.controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
         ),
       ),
     );
