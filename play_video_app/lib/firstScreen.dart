@@ -40,7 +40,7 @@ class _FirstScreenState extends State<FirstScreen> {
           videoData = List<Map<String, dynamic>>.from(data['categories'][0]['videos']);
         });
       } else {
-        print('Chave "videos" não encontrada ou não é uma lista válida.');
+        print('Dados inválidos na resposta da API.');
       }
     } else {
       print('Erro na requisição: ${response.statusCode}');
@@ -57,52 +57,27 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Resten - Midia'),
+        title: Text('Video List'),
       ),
       body: ListView.builder(
         itemCount: videoData.length,
         itemBuilder: (context, index) {
-          return VideoListItem(videoData[index]);
+          final video = videoData[index];
+          return ListTile(
+            title: Text(video['title'] ?? 'Video $index'),
+            subtitle: Text(video['subtitle'] ?? ''),
+            leading: Image.network(video['thumb'] ?? ''),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => VideoPlayerScreen(videoUrl: video['sources'][0]),
+                ),
+              );
+            },
+          );
         },
       ),
-    );
-  }
-}
-
-class VideoListItem extends StatelessWidget {
-  final Map<String, dynamic> videoInfo;
-
-  VideoListItem(this.videoInfo);
-
-  @override
-  Widget build(BuildContext context) {
-
-    //Declarando os atributos a serem no app
-    final String title = videoInfo['title'];
-    final String subtitle=videoInfo['subtitle'];
-    final String thumbUrl = videoInfo['thumb'];
-    final String videoUrl = videoInfo['sources'][0];
-
-    //Inicio do link que contem a thumb e o titulo do video
-    return ListTile(
-      title: Text(title),
-      subtitle: Text(subtitle),
-      //Inicio da thumb
-      leading: Image.network(
-        thumbUrl,
-        width: 100,
-        height: 100,
-        fit: BoxFit.cover,
-      ),
-      //Inicio do metodo de redirecionamento para a widget de inicializacao do video
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => VideoPlayerScreen(videoUrl: videoUrl),
-          ),
-        );
-      },
     );
   }
 }
@@ -122,12 +97,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.videoUrl)
-      ..initialize().then((_) {
-        setState(() {});
-      })
-      ..setVolume(1.0)
-      ..play();
+    _controller = VideoPlayerController.network(widget.videoUrl);
+    _controller.initialize().then((_) {
+      setState(() {});
+    });
   }
 
   @override
@@ -144,7 +117,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         )
             : CircularProgressIndicator(),
       ),
-      //Inicio do floating button responsavel por fazer o play do video
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_controller.value.isPlaying) {
