@@ -35,6 +35,7 @@ class _FirstScreenState extends State<FirstScreen> {
     final response = await http.get(
         Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
 
+    //Metodo condicional que da uma accao em detrimento da resposta da api
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
