@@ -65,6 +65,7 @@ class _FirstScreenState extends State<FirstScreen> {
         itemBuilder: (context, index) {
           final video = videoData[index];
           return ListTile(
+            //Inicio da thumb,titulo e subtitulo das listviews
             title: Text(video['title'] ?? 'Video $index'),
             subtitle: Text(video['subtitle'] ?? ''),
             leading: Image.network(video['thumb'] ?? ''),
