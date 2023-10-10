@@ -119,6 +119,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         )
             : CircularProgressIndicator(),
       ),
+      //Inicio do butao de playg
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_controller.value.isPlaying) {
