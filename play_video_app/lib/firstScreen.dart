@@ -27,20 +27,45 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  List<Map<String, dynamic>> videoData = [];
+  List<String> videoUrls = [];
 
+  //Inicio do metodo responsavel por criar um array de imagens
+  final List<String> imageUrls = [
+    'https://example.com/image1.jpg',
+    'https://example.com/image2.jpg',
+    'https://example.com/image3.jpg',
+  ];
+
+  //Inicio do metodo responsavel por fazer o fetch dos dados da API
   Future<void> fetchData() async {
-    final response = await http.get(
-        Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
+    //Inicio do link da url da api
+    final response = await http.get(Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+
       if (data.containsKey('categories') && data['categories'] is List<dynamic>) {
+        final categories = List<dynamic>.from(data['categories']);
+        List<String> allVideoUrls = [];
+
+        for (var category in categories) {
+          if (category.containsKey('videos') && category['videos'] is List<dynamic>) {
+            final videos = List<dynamic>.from(category['videos']);
+
+            for (var video in videos) {
+              if (video.containsKey('sources') && video['sources'] is List<dynamic>) {
+                final sources = List<dynamic>.from(video['sources']);
+                allVideoUrls.addAll(sources.map((source) => source.toString()));
+              }
+            }
+          }
+        }
+
         setState(() {
-          videoData = List<Map<String, dynamic>>.from(data['categories'][0]['videos']);
+          videoUrls = allVideoUrls;
         });
       } else {
-        print('Chave "videos" não encontrada ou não é uma lista válida.');
+        print('Chave "categories" não encontrada ou não é uma lista válida.');
       }
     } else {
       print('Erro na requisição: ${response.statusCode}');
@@ -57,70 +82,54 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video List'),
+        title: Text('Video Player'),
       ),
       body: ListView.builder(
-        itemCount: videoData.length,
+        itemCount: videoUrls.length,
+        //Inicio do metodo responsavel por criar um array de repeticoes com os titulos dos videos
         itemBuilder: (context, index) {
-          return VideoListItem(videoData[index]);
+          VideoPlayerController _controller = VideoPlayerController.network(videoUrls[index]);
+          _controller.initialize();
+
+          //Inicio da widget que retorna os nomes dos videos
+          return ListTile(
+            title: Text('Video $index'),
+            onTap: () {
+              //Inicio do metodo responsavel por fazer o redirecionamento do link
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => VideoPlayerScreen(controller: _controller),
+                ),
+              );
+            },
+          );
         },
       ),
     );
   }
 }
 
-class VideoListItem extends StatelessWidget {
-  final Map<String, dynamic> videoInfo;
-
-  VideoListItem(this.videoInfo);
-
-  @override
-  Widget build(BuildContext context) {
-    final String title = videoInfo['title'];
-    final String thumbUrl = videoInfo['thumb'];
-    final String videoUrl = videoInfo['sources'][0];
-
-    return ListTile(
-      title: Text(title),
-      leading: Image.network(
-        thumbUrl,
-        width: 100,
-        height: 100,
-        fit: BoxFit.cover,
-      ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => VideoPlayerScreen(videoUrl: videoUrl),
-          ),
-        );
-      },
-    );
-  }
-}
-
 class VideoPlayerScreen extends StatefulWidget {
-  final String videoUrl;
+  final VideoPlayerController controller;
 
-  VideoPlayerScreen({required this.videoUrl});
+  VideoPlayerScreen({required this.controller});
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  late VideoPlayerController _controller;
-
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.videoUrl)
-      ..initialize().then((_) {
-        setState(() {});
-      })
-      ..setVolume(1.0)
-      ..play();
+    widget.controller.play();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.controller.dispose();
   }
 
   @override
@@ -130,32 +139,25 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         title: Text('Video Player'),
       ),
       body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
-          child: VideoPlayer(_controller),
-        )
-            : CircularProgressIndicator(),
+        child: AspectRatio(
+          aspectRatio: widget.controller.value.aspectRatio,
+          child: VideoPlayer(widget.controller),
+        ),
       ),
+      //Inicio do butao responsavel por fazer o play dos videos
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (_controller.value.isPlaying) {
-            _controller.pause();
+          if (widget.controller.value.isPlaying) {
+            widget.controller.pause();
           } else {
-            _controller.play();
+            widget.controller.play();
           }
           setState(() {});
         },
         child: Icon(
-          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          widget.controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
   }
 }
