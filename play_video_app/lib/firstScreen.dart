@@ -76,6 +76,8 @@ class VideoListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    //Declarando os atributos a serem no app
     final String title = videoInfo['title'];
     final String thumbUrl = videoInfo['thumb'];
     final String videoUrl = videoInfo['sources'][0];
