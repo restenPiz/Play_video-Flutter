@@ -103,6 +103,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     });
   }
 
+  //Inicio da widget responsavel por fazer o play do video
   @override
   Widget build(BuildContext context) {
     return Scaffold(
