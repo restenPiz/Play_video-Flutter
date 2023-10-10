@@ -57,7 +57,7 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video List'),
+        title: Text('Resten - Midia'),
       ),
       body: ListView.builder(
         itemCount: videoData.length,
