@@ -69,6 +69,8 @@ class _FirstScreenState extends State<FirstScreen> {
             title: Text(video['title'] ?? 'Video $index'),
             subtitle: Text(video['subtitle'] ?? ''),
             leading: Image.network(video['thumb'] ?? ''),
+
+            //Inicio do metodo responsavel por fazer o redirecionamento para a outra widget
             onTap: () {
               Navigator.push(
                 context,
