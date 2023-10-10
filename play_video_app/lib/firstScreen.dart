@@ -50,6 +50,7 @@ class _FirstScreenState extends State<FirstScreen> {
     fetchData();
   }
 
+  //Inicio da widget responsavel por mostrar os videos no appg
   @override
   Widget build(BuildContext context) {
     return Scaffold(
