@@ -93,6 +93,7 @@ class VideoListItem extends StatelessWidget {
         height: 100,
         fit: BoxFit.cover,
       ),
+      //Inicio do metodo de redirecionamento para a widget de inicializacao do video
       onTap: () {
         Navigator.push(
           context,
