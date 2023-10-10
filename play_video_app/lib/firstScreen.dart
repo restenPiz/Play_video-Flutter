@@ -82,6 +82,7 @@ class _FirstScreenState extends State<FirstScreen> {
           VideoPlayerController _controller = VideoPlayerController.network(videoUrls[index]);
           _controller.initialize();
 
+          //Inicio da widget que retorna os nomes dos videos
           return ListTile(
             title: Text('Video $index'),
             onTap: () {
