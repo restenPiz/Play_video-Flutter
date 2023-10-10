@@ -29,6 +29,13 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   List<String> videoUrls = [];
 
+  //Inicio do metodo responsavel por criar um array de imagens
+  final List<String> imageUrls = [
+    'https://example.com/image1.jpg',
+    'https://example.com/image2.jpg',
+    'https://example.com/image3.jpg',
+  ];g
+
   //Inicio do metodo responsavel por fazer o fetch dos dados da API
   Future<void> fetchData() async {
     //Inicio do link da url da api
@@ -88,6 +95,7 @@ class _FirstScreenState extends State<FirstScreen> {
           return ListTile(
             title: Text('Video $index'),
             onTap: () {
+              //Inicio do metodo responsavel por fazer o redirecionamento do link
               Navigator.push(
                 context,
                 MaterialPageRoute(
