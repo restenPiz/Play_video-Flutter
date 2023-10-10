@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //Metodo responsavel por colocar o appDebuger como false
       debugShowCheckedModeBanner: false,
       home: FirstScreen(),
     );
