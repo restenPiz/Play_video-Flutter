@@ -78,14 +78,14 @@ class VideoListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final String title = videoInfo['title'];
     final String thumbUrl = videoInfo['thumb'];
-    final String videoUrl = videoInfo['sources'][0]; // Assume que há pelo menos uma fonte de vídeo
+    final String videoUrl = videoInfo['sources'][0];
 
     return ListTile(
       title: Text(title),
       leading: Image.network(
         thumbUrl,
-        width: 100, // Ajuste o tamanho conforme necessário
-        height: 100, // Ajuste o tamanho conforme necessário
+        width: 100,
+        height: 100,
         fit: BoxFit.cover,
       ),
       onTap: () {
