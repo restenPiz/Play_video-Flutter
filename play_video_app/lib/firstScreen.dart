@@ -87,6 +87,7 @@ class VideoListItem extends StatelessWidget {
     return ListTile(
       title: Text(title),
       subtitle: Text(subtitle),
+      //Inicio da thumb
       leading: Image.network(
         thumbUrl,
         width: 100,
