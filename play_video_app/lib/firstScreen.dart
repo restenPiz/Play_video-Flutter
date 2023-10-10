@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //Metodo responsavel por colocar o appDebuger como false
       debugShowCheckedModeBanner: false,
       home: FirstScreen(),
     );
@@ -31,17 +30,33 @@ class _FirstScreenState extends State<FirstScreen> {
   List<String> videoUrls = [];
 
   Future<void> fetchData() async {
-    final response = await http.get(
-        Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
+    final response = await http.get(Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      if (data.containsKey('videos') && data['videos'] is List<dynamic>) {
+
+      if (data.containsKey('categories') && data['categories'] is List<dynamic>) {
+        final categories = List<dynamic>.from(data['categories']);
+        List<String> allVideoUrls = [];
+
+        for (var category in categories) {
+          if (category.containsKey('videos') && category['videos'] is List<dynamic>) {
+            final videos = List<dynamic>.from(category['videos']);
+
+            for (var video in videos) {
+              if (video.containsKey('sources') && video['sources'] is List<dynamic>) {
+                final sources = List<dynamic>.from(video['sources']);
+                allVideoUrls.addAll(sources.map((source) => source.toString()));
+              }
+            }
+          }
+        }
+
         setState(() {
-          videoUrls = List<String>.from(data['videos']);
+          videoUrls = allVideoUrls;
         });
       } else {
-        print('Chave "videos" não encontrada ou não é uma lista válida.');
+        print('Chave "categories" não encontrada ou não é uma lista válida.');
       }
     } else {
       print('Erro na requisição: ${response.statusCode}');
@@ -54,22 +69,18 @@ class _FirstScreenState extends State<FirstScreen> {
     fetchData();
   }
 
-  //Inicio da widget responsavel por mostrar os videos no appg
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Inicio do appBar responsavel por colocar o titulo do app on the top
       appBar: AppBar(
-        title: Text('Video List'),
+        title: Text('Video Player'),
       ),
       body: ListView.builder(
         itemCount: videoUrls.length,
         itemBuilder: (context, index) {
-          VideoPlayerController _controller =
-          VideoPlayerController.network(videoUrls[index]);
+          VideoPlayerController _controller = VideoPlayerController.network(videoUrls[index]);
           _controller.initialize();
 
-          //Retornando o titulo que vai permitir o click de abertura do video
           return ListTile(
             title: Text('Video $index'),
             onTap: () {
@@ -121,8 +132,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           child: VideoPlayer(widget.controller),
         ),
       ),
-
-      //Inicio do butao responsavel por passar o video
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (widget.controller.value.isPlaying) {
