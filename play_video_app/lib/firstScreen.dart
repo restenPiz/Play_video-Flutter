@@ -79,6 +79,7 @@ class _FirstScreenState extends State<FirstScreen> {
       ),
       body: ListView.builder(
         itemCount: videoUrls.length,
+        //Inicio do metodo responsavel por criar um array de repeticoes com os titulos dos videos
         itemBuilder: (context, index) {
           VideoPlayerController _controller = VideoPlayerController.network(videoUrls[index]);
           _controller.initialize();
