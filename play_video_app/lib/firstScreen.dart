@@ -82,6 +82,7 @@ class VideoListItem extends StatelessWidget {
     final String thumbUrl = videoInfo['thumb'];
     final String videoUrl = videoInfo['sources'][0];
 
+    //Inicio do link que contem a thumb e o titulo do video
     return ListTile(
       title: Text(title),
       leading: Image.network(
