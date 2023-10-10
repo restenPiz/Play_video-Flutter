@@ -134,6 +134,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           child: VideoPlayer(widget.controller),
         ),
       ),
+      //Inicio do butao responsavel por fazer o play dos videos
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (widget.controller.value.isPlaying) {
