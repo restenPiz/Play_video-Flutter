@@ -107,7 +107,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Player'),
+        title: Text('Resten - Play'),
       ),
       body: Center(
         child: _controller.value.isInitialized
