@@ -139,6 +139,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         )
             : CircularProgressIndicator(),
       ),
+      //Inicio do floating button responsavel por fazer o play do video
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_controller.value.isPlaying) {
