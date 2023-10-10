@@ -27,45 +27,20 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  List<String> videoUrls = [];
+  List<Map<String, dynamic>> videoData = [];
 
-  //Inicio do metodo responsavel por criar um array de imagens
-  final List<String> imageUrls = [
-    'https://example.com/image1.jpg',
-    'https://example.com/image2.jpg',
-    'https://example.com/image3.jpg',
-  ];g
-
-  //Inicio do metodo responsavel por fazer o fetch dos dados da API
   Future<void> fetchData() async {
-    //Inicio do link da url da api
-    final response = await http.get(Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
+    final response = await http.get(
+        Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-
       if (data.containsKey('categories') && data['categories'] is List<dynamic>) {
-        final categories = List<dynamic>.from(data['categories']);
-        List<String> allVideoUrls = [];
-
-        for (var category in categories) {
-          if (category.containsKey('videos') && category['videos'] is List<dynamic>) {
-            final videos = List<dynamic>.from(category['videos']);
-
-            for (var video in videos) {
-              if (video.containsKey('sources') && video['sources'] is List<dynamic>) {
-                final sources = List<dynamic>.from(video['sources']);
-                allVideoUrls.addAll(sources.map((source) => source.toString()));
-              }
-            }
-          }
-        }
-
         setState(() {
-          videoUrls = allVideoUrls;
+          videoData = List<Map<String, dynamic>>.from(data['categories'][0]['videos']);
         });
       } else {
-        print('Chave "categories" não encontrada ou não é uma lista válida.');
+        print('Chave "videos" não encontrada ou não é uma lista válida.');
       }
     } else {
       print('Erro na requisição: ${response.statusCode}');
@@ -82,54 +57,70 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Player'),
+        title: Text('Video List'),
       ),
       body: ListView.builder(
-        itemCount: videoUrls.length,
-        //Inicio do metodo responsavel por criar um array de repeticoes com os titulos dos videos
+        itemCount: videoData.length,
         itemBuilder: (context, index) {
-          VideoPlayerController _controller = VideoPlayerController.network(videoUrls[index]);
-          _controller.initialize();
-
-          //Inicio da widget que retorna os nomes dos videos
-          return ListTile(
-            title: Text('Video $index'),
-            onTap: () {
-              //Inicio do metodo responsavel por fazer o redirecionamento do link
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => VideoPlayerScreen(controller: _controller),
-                ),
-              );
-            },
-          );
+          return VideoListItem(videoData[index]);
         },
       ),
     );
   }
 }
 
-class VideoPlayerScreen extends StatefulWidget {
-  final VideoPlayerController controller;
+class VideoListItem extends StatelessWidget {
+  final Map<String, dynamic> videoInfo;
 
-  VideoPlayerScreen({required this.controller});
+  VideoListItem(this.videoInfo);
+
+  @override
+  Widget build(BuildContext context) {
+    final String title = videoInfo['title'];
+    final String thumbUrl = videoInfo['thumb'];
+    final String videoUrl = videoInfo['sources'][0]; // Assume que há pelo menos uma fonte de vídeo
+
+    return ListTile(
+      title: Text(title),
+      leading: Image.network(
+        thumbUrl,
+        width: 100, // Ajuste o tamanho conforme necessário
+        height: 100, // Ajuste o tamanho conforme necessário
+        fit: BoxFit.cover,
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoPlayerScreen(videoUrl: videoUrl),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class VideoPlayerScreen extends StatefulWidget {
+  final String videoUrl;
+
+  VideoPlayerScreen({required this.videoUrl});
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+  late VideoPlayerController _controller;
+
   @override
   void initState() {
     super.initState();
-    widget.controller.play();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    widget.controller.dispose();
+    _controller = VideoPlayerController.network(widget.videoUrl)
+      ..initialize().then((_) {
+        setState(() {});
+      })
+      ..setVolume(1.0)
+      ..play();
   }
 
   @override
@@ -139,25 +130,32 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         title: Text('Video Player'),
       ),
       body: Center(
-        child: AspectRatio(
-          aspectRatio: widget.controller.value.aspectRatio,
-          child: VideoPlayer(widget.controller),
-        ),
+        child: _controller.value.isInitialized
+            ? AspectRatio(
+          aspectRatio: _controller.value.aspectRatio,
+          child: VideoPlayer(_controller),
+        )
+            : CircularProgressIndicator(),
       ),
-      //Inicio do butao responsavel por fazer o play dos videos
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (widget.controller.value.isPlaying) {
-            widget.controller.pause();
+          if (_controller.value.isPlaying) {
+            _controller.pause();
           } else {
-            widget.controller.play();
+            _controller.play();
           }
           setState(() {});
         },
         child: Icon(
-          widget.controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 }
