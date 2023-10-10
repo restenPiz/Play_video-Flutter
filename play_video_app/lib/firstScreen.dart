@@ -53,6 +53,7 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //Inicio do appBar responsavel por colocar o titulo do app on the top
       appBar: AppBar(
         title: Text('Video List'),
       ),
