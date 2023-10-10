@@ -31,18 +31,18 @@ class _FirstScreenState extends State<FirstScreen> {
   List<String> videoUrls = [];
 
   Future<void> fetchData() async {
-    //Inicio do link da url da api
     final response = await http.get(
         Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
 
-    //Metodo condicional que da uma accao em detrimento da resposta da api
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      setState(() {
-        videoUrls = List<String>.from(data['videos']);
-        print('Data fetched successfully: $data');
-        print('Video URLs: $videoUrls');
-      });
+      if (data.containsKey('videos') && data['videos'] is List<dynamic>) {
+        setState(() {
+          videoUrls = List<String>.from(data['videos']);
+        });
+      } else {
+        print('Chave "videos" não encontrada ou não é uma lista válida.');
+      }
     } else {
       print('Erro na requisição: ${response.statusCode}');
     }
