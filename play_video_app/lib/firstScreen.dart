@@ -40,6 +40,8 @@ class _FirstScreenState extends State<FirstScreen> {
       final data = json.decode(response.body);
       setState(() {
         videoUrls = List<String>.from(data['videos']);
+        print('Data fetched successfully: $data');
+        print('Video URLs: $videoUrls');
       });
     } else {
       print('Erro na requisição: ${response.statusCode}');
