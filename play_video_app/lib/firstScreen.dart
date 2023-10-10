@@ -69,6 +69,7 @@ class _FirstScreenState extends State<FirstScreen> {
           VideoPlayerController.network(videoUrls[index]);
           _controller.initialize();
 
+          //Retornando o titulo que vai permitir o click de abertura do video
           return ListTile(
             title: Text('Video $index'),
             onTap: () {
