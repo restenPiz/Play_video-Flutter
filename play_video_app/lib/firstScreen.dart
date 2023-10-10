@@ -29,6 +29,7 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   List<Map<String, dynamic>> videoData = [];
 
+  //Inicio do metodo para fazer o fetch de todos os dados da API
   Future<void> fetchData() async {
     final response = await http.get(
         Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
