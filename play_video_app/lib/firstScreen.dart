@@ -82,6 +82,13 @@ class _FirstScreenState extends State<FirstScreen> {
                 // Navegar para a tela inicial ou qualquer outra tela
               },
             ),
+            ListTile(
+              leading: Icon(Icons.help),
+              title: Text('Ajuda'),
+              onTap: () {
+                // Navegar para a tela inicial ou qualquer outra tela
+              },
+            ),
             // Adicione mais itens de menu conforme necessário
           ],
         ),
