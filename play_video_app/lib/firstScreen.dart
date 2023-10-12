@@ -137,6 +137,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           }
           setState(() {});
         },
+        //Inicio do icone de play e pause no butaog
         child: Icon(
           _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
         ),
