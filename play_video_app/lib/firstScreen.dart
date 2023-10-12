@@ -168,6 +168,46 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         )
             : CircularProgressIndicator(),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const UserAccountsDrawerHeader(
+              accountName: Text("Mauro Peniel"),
+              accountEmail: Text("contacto@mauropeniel.info"),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person),
+              ),
+            ),
+            //Inicio dos links do menug
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Início'),
+              onTap: () {
+                // Navegar para a tela inicial ou qualquer outra tela
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.help),
+              title: Text('Ajuda'),
+              onTap: () {
+                // Navegar para a tela inicial ou qualquer outra tela
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.close),
+              title: Text('Sair'),
+              onTap: () {
+                //Metodo para fechar a applicacao
+                SystemNavigator.pop();
+              },
+            ),
+            //Fim dos links do menug
+            // Adicione mais itens de menu conforme necessário
+          ],
+        ),
+      ),
       //Inicio do butao de playg
       floatingActionButton: FloatingActionButton(
         onPressed: () {
