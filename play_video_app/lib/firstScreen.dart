@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:video_player/video_player.dart';
@@ -94,7 +95,8 @@ class _FirstScreenState extends State<FirstScreen> {
               leading: Icon(Icons.close),
               title: Text('Sair'),
               onTap: () {
-                // Navegar para a tela inicial ou qualquer outra tela
+                //Metodo para fechar a applicacao
+                SystemNavigator.pop();
               },
             ),
             //Fim dos links do menug
