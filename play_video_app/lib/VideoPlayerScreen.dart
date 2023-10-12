@@ -45,6 +45,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             const UserAccountsDrawerHeader(
+              //Inicio da seccao dos dados pessoais
               accountName: Text("Mauro Peniel"),
               accountEmail: Text("contacto@mauropeniel.info"),
               currentAccountPicture: CircleAvatar(
