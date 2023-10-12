@@ -102,6 +102,7 @@ class VideoPlayerScreen extends StatefulWidget {
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   late VideoPlayerController _controller;
 
+  //Inicio do metodo de mudanca de estado
   @override
   void initState() {
     super.initState();
