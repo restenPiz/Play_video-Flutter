@@ -90,7 +90,7 @@ class _FirstScreenState extends State<FirstScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.help),
+              leading: Icon(Icons.close),
               title: Text('Sair'),
               onTap: () {
                 // Navegar para a tela inicial ou qualquer outra tela
