@@ -31,6 +31,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
   //Inicio do metodo para fazer o fetch de todos os dados da API
   Future<void> fetchData() async {
+    //Inicio da URl responsavel por retornar a URL com os dados em Json
     final response = await http.get(
         Uri.parse('https://raw.githubusercontent.com/bikashthapa01/myvideos-android-app/master/data.json'));
 
