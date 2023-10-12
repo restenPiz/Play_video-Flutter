@@ -63,6 +63,29 @@ class _FirstScreenState extends State<FirstScreen> {
       appBar: AppBar(
         title: Text('Resten - Play'),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text("Seu Nome"),
+              accountEmail: Text("seuemail@example.com"),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Início'),
+              onTap: () {
+                // Navegar para a tela inicial ou qualquer outra tela
+              },
+            ),
+            // Adicione mais itens de menu conforme necessário
+          ],
+        ),
+      ),
       //Inicio da widget que responsavel por listar todos os listViews
       body: ListView.builder(
         itemCount: videoData.length,
