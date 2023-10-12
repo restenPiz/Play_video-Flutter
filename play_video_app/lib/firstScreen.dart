@@ -68,8 +68,8 @@ class _FirstScreenState extends State<FirstScreen> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text("Seu Nome"),
-              accountEmail: Text("seuemail@example.com"),
+              accountName: Text("Mauro Peniel"),
+              accountEmail: Text("contacto@mauropeniel.info"),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Icon(Icons.person),
