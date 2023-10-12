@@ -67,7 +67,7 @@ class _FirstScreenState extends State<FirstScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            UserAccountsDrawerHeader(
+            const UserAccountsDrawerHeader(
               accountName: Text("Mauro Peniel"),
               accountEmail: Text("contacto@mauropeniel.info"),
               currentAccountPicture: CircleAvatar(
