@@ -29,6 +29,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //Inicio do AppBarg
       appBar: AppBar(
         //Inicio do titulo do appbar
         title: Text('Resten - Play'),
